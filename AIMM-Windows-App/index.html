@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AIMM AI Readiness & Agentic AI Adoption Scorecard</title>
+  <style>
+    :root {
+      --ink: #172026;
+      --muted: #5f6f79;
+      --line: #d8e0e5;
+      --panel: #ffffff;
+      --bg: #f5f7f8;
+      --nav: #102d36;
+      --nav2: #173f4a;
+      --teal: #0f766e;
+      --blue: #3159b8;
+      --amber: #a05a00;
+      --red: #af3029;
+      --green: #247247;
+      --pill0: #eef2ff;
+      --pill1: #def7ec;
+      --pill2: #fff1e8;
+      --pill3: #fff6db;
+      --pill4: #e9edff;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--nav), var(--nav2));
+      color: #fff;
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .subhead {
+      color: #c7d7df;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    button, .file-label {
+      border: 1px solid transparent;
+      background: #fff;
+      color: var(--nav);
+      border-radius: 6px;
+      padding: 8px 11px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    button.secondary, .file-label {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255,255,255,.35);
+    }
+
+    button.ghost {
+      background: #f8fafb;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+
+    input[type="file"] { display: none; }
+
+    main {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      letter-spacing: 0;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 9px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    textarea { min-height: 80px; resize: vertical; }
+
+    .score-board {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 16px;
+      align-items: center;
+      min-height: 175px;
+    }
+
+    .score-ring {
+      width: 156px;
+      height: 156px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: conic-gradient(var(--teal) 0deg, #dce6ea 0deg);
+      position: relative;
+      margin: auto;
+    }
+
+    .score-ring::after {
+      content: "";
+      position: absolute;
+      width: 116px;
+      height: 116px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .score-ring strong, .score-ring span {
+      position: relative;
+      z-index: 1;
+      display: block;
+      text-align: center;
+    }
+
+    .score-ring strong { font-size: 36px; }
+    .score-ring span { color: var(--muted); font-size: 12px; }
+
+    .summary-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 10px;
+      background: #fafcfd;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .metric strong { font-size: 18px; }
+
+    .phase-flow {
+      display: grid;
+      gap: 10px;
+    }
+
+    .phase {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 13px 16px;
+      display: grid;
+      grid-template-columns: 190px 1fr 120px;
+      gap: 12px;
+      align-items: center;
+      background: #fff;
+    }
+
+    .phase:nth-child(1) { background: var(--pill0); }
+    .phase:nth-child(2) { background: var(--pill1); }
+    .phase:nth-child(3) { background: var(--pill2); }
+    .phase:nth-child(4) { background: var(--pill3); }
+    .phase:nth-child(5) { background: var(--pill4); }
+
+    .phase strong { font-size: 15px; }
+    .phase p { margin: 2px 0 0; color: #38505b; font-size: 13px; line-height: 1.35; }
+    .phase time { font-weight: 700; text-align: right; color: #374151; }
+
+    .pillar-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(170px, 1fr));
+      gap: 12px;
+    }
+
+    .pillar-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fff;
+      display: grid;
+      gap: 10px;
+      min-height: 172px;
+    }
+
+    .pillar-card .score {
+      font-size: 28px;
+      font-weight: 750;
+    }
+
+    .heat {
+      height: 9px;
+      border-radius: 999px;
+      background: #e8eef1;
+      overflow: hidden;
+    }
+
+    .heat div { height: 100%; width: 0%; background: var(--red); }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 12px;
+      color: #38505b;
+      background: #f8fafb;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .tab {
+      background: #f8fafb;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .tab.active {
+      background: var(--nav);
+      color: #fff;
+      border-color: var(--nav);
+    }
+
+    .question {
+      border-top: 1px solid var(--line);
+      padding: 13px 0;
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) 140px 240px;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .question:first-of-type { border-top: 0; }
+    .question p { margin: 0 0 5px; line-height: 1.35; }
+    .question small { color: var(--muted); line-height: 1.35; display: block; }
+
+    .deliverable-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .deliverable {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fafcfd;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .matrix-form {
+      display: grid;
+      grid-template-columns: 1.4fr .55fr .55fr auto;
+      gap: 8px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+
+    .priority {
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 3px 8px;
+      display: inline-block;
+      background: #edf7f4;
+      color: var(--teal);
+      white-space: nowrap;
+    }
+
+    .references a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    .references li { margin: 7px 0; }
+
+    .hidden { display: none; }
+
+    @media (max-width: 1080px) {
+      .top-grid, .matrix-grid { grid-template-columns: 1fr; }
+      .pillar-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .question { grid-template-columns: 1fr; }
+      .phase { grid-template-columns: 1fr; }
+      .phase time { text-align: left; }
+    }
+
+    @media (max-width: 720px) {
+      header { align-items: flex-start; flex-direction: column; padding: 16px; }
+      main { padding: 14px; }
+      .meta-grid, .summary-list, .deliverable-grid, .pillar-grid, .matrix-form { grid-template-columns: 1fr; }
+      .score-board { grid-template-columns: 1fr; }
+      .actions { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>AIMM AI Readiness & Agentic AI Adoption Scorecard</h1>
+      <div class="subhead">5-pillar assessment, 0-5 maturity scoring, phase roadmap, and board-ready exports</div>
+    </div>
+    <div class="actions">
+      <button onclick="downloadReport()">Export HTML report</button>
+      <button class="secondary" onclick="downloadJson()">Export JSON</button>
+      <label class="file-label" for="importFile">Import JSON</label>
+      <input id="importFile" type="file" accept="application/json" onchange="importJson(event)">
+      <button class="secondary" onclick="resetAssessment()">Reset</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="top-grid">
+      <section>
+        <h2>Client Assessment</h2>
+        <div class="meta-grid">
+          <div><label>Client / business unit</label><input id="clientName" placeholder="Client name"></div>
+          <div><label>Sector</label><select id="sector"></select></div>
+          <div><label>Assessment date</label><input id="date" type="date"></div>
+          <div><label>Sponsor</label><input id="sponsor" placeholder="CIO / COO / CDAO"></div>
+        </div>
+        <div style="margin-top:12px">
+          <label>Executive context</label>
+          <textarea id="context" placeholder="Business pain, target functions, current AI usage, board expectations, constraints"></textarea>
+        </div>
+      </section>
+
+      <section>
+        <h2>Overall Readiness</h2>
+        <div class="score-board">
+          <div class="score-ring" id="scoreRing"><div><strong id="overallScore">0.0</strong><span>/ 5.0</span></div></div>
+          <div class="summary-list">
+            <div class="metric"><span>Maturity level</span><strong id="maturityLevel">Initial</strong></div>
+            <div class="metric"><span>Overall percent</span><strong id="overallPercent">0%</strong></div>
+            <div class="metric"><span>Lowest pillar</span><strong id="lowestPillar">Data maturity</strong></div>
+            <div class="metric"><span>Recommended next phase</span><strong id="nextPhase">Phase 2</strong></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section>
+      <h2>Five-Phase AIMM Engagement Flow</h2>
+      <div class="phase-flow" id="phaseFlow"></div>
+    </section>
+
+    <section>
+      <h2>5-Pillar Heatmap</h2>
+      <div class="pillar-grid" id="pillarGrid"></div>
+    </section>
+
+    <section>
+      <h2>Assessment Queries & Scoring</h2>
+      <div class="tabs" id="tabs"></div>
+      <div id="questions"></div>
+    </section>
+
+    <section>
+      <h2>Key Deliverables</h2>
+      <div class="deliverable-grid" id="deliverables"></div>
+    </section>
+
+    <section>
+      <h2>Agentic AI / GenAI Use Case Priority Matrix</h2>
+      <div class="matrix-grid">
+        <div>
+          <div class="matrix-form">
+            <div><label>Use case</label><input id="useCaseName" placeholder="Claims triage agent, field service copilot, finance close analyst"></div>
+            <div><label>Impact 1-5</label><input id="useCaseImpact" type="number" min="1" max="5" value="4"></div>
+            <div><label>Effort 1-5</label><input id="useCaseEffort" type="number" min="1" max="5" value="3"></div>
+            <button class="ghost" onclick="addUseCase()">Add</button>
+          </div>
+          <table>
+            <thead><tr><th>Use case</th><th>Impact</th><th>Effort</th><th>Priority</th><th></th></tr></thead>
+            <tbody id="useCaseTable"></tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Roadmap Guidance</h3>
+          <table>
+            <tbody id="roadmapTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="references">
+      <h2>Source Basis</h2>
+      <ul>
+        <li>Local framework deck: <strong>AI-Readiness & Agentic AI Adoption framework.pptx</strong>, especially the 0-5 maturity scale and 5-pillar scorecard concept.</li>
+        <li>Local supporting materials: <strong>Enterprise AI Maturity Framework.pdf</strong>, <strong>Practical_Lessons_AI_Agents.pdf</strong>, <strong>LLM Agent Evaluations & Project Overview.pdf</strong>, and agentic model/infra lectures in the AIMM folder.</li>
+        <li><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank">NIST AI Risk Management Framework</a>: governance, mapping, measuring, and managing AI risks.</li>
+        <li><a href="https://www.nist.gov/node/1840561" target="_blank">NIST Cybersecurity Framework 2.0</a>: Govern plus Identify, Protect, Detect, Respond, Recover functions.</li>
+        <li><a href="https://www.iso.org/standard/81230.html" target="_blank">ISO/IEC 42001:2023</a>: AI management system for responsible development, provision, and use of AI systems.</li>
+        <li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications" target="_blank">OWASP Top 10 for LLM Applications</a>: prompt injection, sensitive information disclosure, excessive agency, and other LLM-specific risks.</li>
+        <li><a href="https://www.microsoft.com/en-us/thesource-developer/Event/481/ai-readiness-assessment" target="_blank">Microsoft AI Readiness Assessment</a>: readiness pillars including business strategy, governance/security, data, organization/culture, infrastructure, and model management.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    const maturityScale = [
+      { min: 0, max: 1.49, label: "Initial", meaning: "Ad hoc, undocumented, no clear ownership", color: "#af3029" },
+      { min: 1.5, max: 2.49, label: "Developing", meaning: "Some processes exist but are inconsistent", color: "#c45f18" },
+      { min: 2.5, max: 3.49, label: "Defined", meaning: "Documented, repeatable, owned", color: "#a05a00" },
+      { min: 3.5, max: 4.49, label: "Advanced", meaning: "Measured, optimized, partially automated", color: "#247247" },
+      { min: 4.5, max: 5, label: "Leading", meaning: "AI-native, automated, continuously improving", color: "#0f766e" }
+    ];
+
+    const phases = [
+      { name: "Phase 1 - Discovery & scoping", timing: "Week 1-2", details: "C-suite workshop, business pain mapping, sponsor alignment." },
+      { name: "Phase 2 - AI readiness assessment", timing: "Week 2-4", details: "5-pillar scoring, evidence review, maturity heatmap, executive scorecard." },
+      { name: "Phase 3 - Agentic AI / GenAI roadmap design", timing: "Week 4-6", details: "Use case prioritisation, impact vs effort matrix, build vs buy vs partner, hyperscaler alignment, phased investment model." },
+      { name: "Phase 4 - Pilot & proof of value", timing: "Week 6-18", details: "1-2 high-impact use cases, 8-12 week sprint, KPI baseline versus outcome, LLMOps setup, governance and risk guardrails." },
+      { name: "Phase 5 - Scale & operate", timing: "Ongoing", details: "Enterprise rollout, outcome-based managed services, continuous optimisation, AI centre of excellence setup." }
+    ];
+
+    const deliverableList = [
+      { title: "AI readiness scorecard", body: "Board-ready maturity heatmap, score rationale, evidence gaps, and executive summary." },
+      { title: "Use case priority matrix", body: "Impact vs effort ranking, dependency notes, funding logic, and pilot shortlist." },
+      { title: "Phased transformation roadmap", body: "12-36 month plan with phase gates, operating model, investment bands, and risk controls." }
+    ];
+
+    const pillars = [
+      {
+        id: "data",
+        name: "Data maturity",
+        short: "Quality, pipelines, governance",
+        weight: 20,
+        refs: ["Data quality", "Lineage", "Access", "Master data"],
+        questions: [
+          ["Do critical business datasets have accountable owners, documented definitions, and known quality thresholds?", "Evidence: data catalog, ownership RACI, quality SLA, issue backlog."],
+          ["Can AI teams access governed, permissioned data through repeatable pipelines rather than one-off extracts?", "Evidence: ingestion pipelines, access workflows, audit logs."],
+          ["Are data lineage, consent, retention, and privacy constraints visible before data is used in AI systems?", "Evidence: lineage tool, privacy controls, retention policy."],
+          ["Are unstructured knowledge sources ready for retrieval, with freshness, source authority, and access control metadata?", "Evidence: content inventory, RAG index design, ACL mapping."],
+          ["Are data-quality failures measured and remediated before they affect analytics, models, or agents?", "Evidence: quality dashboards, incident records, remediation owners."],
+          ["Is synthetic, external, or third-party data reviewed for license, bias, privacy, and fitness for purpose?", "Evidence: vendor reviews, impact assessments, evaluation notes."],
+          ["Can data products be reused across multiple AI use cases with clear contracts and service levels?", "Evidence: data product registry, APIs, service metrics."],
+          ["Are training, evaluation, and production datasets versioned for reproducibility?", "Evidence: dataset versions, experiment tracking, model cards."],
+          ["Are sensitive fields classified and protected before they reach LLM prompts, tools, logs, or vector stores?", "Evidence: DLP rules, prompt logging policy, masking controls."]
+        ]
+      },
+      {
+        id: "infra",
+        name: "AI infra",
+        short: "GPU, cloud, edge, LLMOps readiness",
+        weight: 20,
+        refs: ["Cloud/GPU", "MLOps", "LLMOps", "Observability"],
+        questions: [
+          ["Is there an approved platform pattern for GenAI, RAG, agents, model APIs, and secure tool integration?", "Evidence: reference architecture, platform roadmap, approved services."],
+          ["Can teams deploy models or agent workflows through CI/CD with environment separation and rollback?", "Evidence: deployment pipelines, release logs, rollback tests."],
+          ["Are model, prompt, tool, and workflow versions tracked from experiment to production?", "Evidence: registry, prompt store, workflow versioning."],
+          ["Is GPU, inference, token, and storage cost visible by use case and business owner?", "Evidence: cost dashboards, chargeback model, budget controls."],
+          ["Are latency, availability, hallucination, tool failure, and agent task-success metrics monitored?", "Evidence: observability dashboards, eval harness, incident runbooks."],
+          ["Can the enterprise run hybrid patterns where sensitive workloads stay on approved cloud, edge, or private infrastructure?", "Evidence: hosting policy, network architecture, data residency review."],
+          ["Are retrieval, embedding, vector database, and knowledge refresh pipelines production-grade?", "Evidence: refresh cadence, index tests, quality metrics."],
+          ["Is there a model-selection approach across commercial APIs, open models, fine-tuning, and small task models?", "Evidence: model evaluation rubric, vendor benchmarks."],
+          ["Are agent tools sandboxed, least-privileged, and observable during execution?", "Evidence: tool permission matrix, sandbox logs, approval gates."]
+        ]
+      },
+      {
+        id: "cyber",
+        name: "Cyber posture",
+        short: "ISO 27001, NIST, IT/OT/AI risk",
+        weight: 20,
+        refs: ["NIST AI RMF", "NIST CSF", "ISO 42001", "OWASP LLM"],
+        questions: [
+          ["Does the organization have an AI risk governance process with named accountability and escalation paths?", "Evidence: AI policy, risk committee charter, decision log."],
+          ["Are AI use cases mapped for risk, affected stakeholders, regulatory exposure, and business impact before launch?", "Evidence: AI impact assessment, risk register, approval workflow."],
+          ["Are prompt injection, sensitive data disclosure, supply chain, output handling, and excessive agency risks tested?", "Evidence: OWASP LLM test plan, red-team reports, remediation backlog."],
+          ["Are agents restricted by least privilege, human approval for sensitive actions, and deterministic policy controls?", "Evidence: permissions, approval rules, transaction limits."],
+          ["Are AI vendors and model providers assessed for data retention, isolation, auditability, security, and exit risk?", "Evidence: vendor due diligence, contracts, DPAs, SOC reports."],
+          ["Are AI logs, prompts, responses, tool calls, and outcomes retained in a compliant and searchable way?", "Evidence: logging architecture, retention rules, access reviews."],
+          ["Are incident response and recovery playbooks updated for AI-specific events?", "Evidence: tabletop exercises, runbooks, post-incident reviews."],
+          ["Are identity, secrets, API keys, and service accounts protected for AI applications and tools?", "Evidence: IAM reviews, secret scanning, key rotation."],
+          ["Are model behavior, bias, toxicity, jailbreaks, and unsafe automation continuously measured after go-live?", "Evidence: evaluation reports, monitoring alerts, guardrail tuning."]
+        ]
+      },
+      {
+        id: "process",
+        name: "Process & BizOps",
+        short: "CRM, ERP, ITSM automation gaps",
+        weight: 20,
+        refs: ["Use cases", "Process mining", "KPI baselines", "Operating model"],
+        questions: [
+          ["Are the highest-value business processes mapped with pain points, cycle time, cost, risk, and automation gaps?", "Evidence: process maps, value stream analysis, operations dashboards."],
+          ["Are AI use cases linked to measurable business outcomes and baseline KPIs before solution design?", "Evidence: benefits case, KPI baseline, owner sign-off."],
+          ["Is there a consistent impact vs effort model to rank use cases across functions?", "Evidence: scoring matrix, portfolio governance, prioritisation decisions."],
+          ["Are build, buy, partner, and hyperscaler alignment decisions made with clear architecture and commercial criteria?", "Evidence: solution options, vendor comparisons, cost model."],
+          ["Can CRM, ERP, ITSM, knowledge, and workflow systems expose safe APIs for agents and copilots?", "Evidence: integration catalog, API security review, test accounts."],
+          ["Are human-in-the-loop checkpoints designed into processes where AI decisions affect customers, finance, safety, or compliance?", "Evidence: approval workflow, exception handling, audit trail."],
+          ["Are process owners accountable for adoption, outcome tracking, and continuous improvement after pilot launch?", "Evidence: owner RACI, cadence, improvement backlog."],
+          ["Are change controls fast enough for AI iteration while still protecting production processes?", "Evidence: release policy, model-change gates, risk tiers."],
+          ["Is there a benefits-realization model for productivity, revenue, risk reduction, and customer experience?", "Evidence: financial model, benefits tracker, executive dashboard."]
+        ]
+      },
+      {
+        id: "talent",
+        name: "Talent & culture",
+        short: "AI literacy, change readiness",
+        weight: 20,
+        refs: ["AI literacy", "COE", "Change", "Role redesign"],
+        questions: [
+          ["Do executives share a clear point of view on where AI should create value and where it should not be used?", "Evidence: strategy narrative, leadership workshop outputs."],
+          ["Are employees trained on approved AI tools, responsible use, data handling, and escalation paths?", "Evidence: training completion, policy attestations, help channels."],
+          ["Does the organization have product, data, engineering, security, legal, and operations capacity for cross-functional AI squads?", "Evidence: squad model, skills inventory, staffing plan."],
+          ["Are frontline teams involved in workflow redesign rather than receiving AI tools after design is complete?", "Evidence: workshops, adoption feedback, pilot retrospectives."],
+          ["Is there a clear AI Center of Excellence or federated community that scales patterns and reusable assets?", "Evidence: COE charter, playbooks, reusable components."],
+          ["Are incentives, role expectations, and performance measures updated to support AI-assisted work?", "Evidence: role design, HR guidance, productivity measures."],
+          ["Can teams identify and retire low-value AI experiments quickly without reputational penalty?", "Evidence: portfolio reviews, kill criteria, lessons learned."],
+          ["Are prompt engineering, evaluation design, agent supervision, and vendor management skills deliberately developed?", "Evidence: learning paths, certification, guild sessions."],
+          ["Is employee trust measured and managed through transparent communication, safeguards, and support?", "Evidence: pulse surveys, adoption analytics, communications plan."]
+        ]
+      }
+    ];
+
+    const sectors = ["Oil & Gas", "BFSI", "Telecom", "Retail", "Government", "Energy", "Manufacturing", "Healthcare", "Technology", "Other"];
+    const appState = {
+      activePillar: "data",
+      scores: {},
+      notes: {},
+      useCases: [
+        { name: "Customer service agent with CRM and knowledge-base tools", impact: 5, effort: 3 },
+        { name: "IT service desk triage and resolution copilot", impact: 4, effort: 2 },
+        { name: "Contract and policy review assistant", impact: 4, effort: 3 }
+      ]
+    };
+
+    function init() {
+      const saved = localStorage.getItem("aimm-scorecard-v1");
+      if (saved) {
+        try { Object.assign(appState, JSON.parse(saved)); } catch (_) {}
+      }
+
+      sectors.forEach(s => {
+        const opt = document.createElement("option");
+        opt.value = s;
+        opt.textContent = s;
+        document.getElementById("sector").appendChild(opt);
+      });
+
+      document.getElementById("date").value = appState.date || new Date().toISOString().slice(0, 10);
+      ["clientName", "sector", "sponsor", "context", "date"].forEach(id => {
+        if (appState[id]) document.getElementById(id).value = appState[id];
+        document.getElementById(id).addEventListener("input", saveMeta);
+      });
+
+      pillars.forEach(p => {
+        if (!appState.scores[p.id]) appState.scores[p.id] = Array(p.questions.length).fill(0);
+        if (!appState.notes[p.id]) appState.notes[p.id] = Array(p.questions.length).fill("");
+      });
+
+      renderPhases();
+      renderDeliverables();
+      renderTabs();
+      renderQuestions();
+      renderUseCases();
+      updateScores();
+    }
+
+    function saveMeta() {
+      ["clientName", "sector", "sponsor", "context", "date"].forEach(id => appState[id] = document.getElementById(id).value);
+      persist();
+    }
+
+    function persist() {
+      localStorage.setItem("aimm-scorecard-v1", JSON.stringify(appState));
+    }
+
+    function renderPhases() {
+      const holder = document.getElementById("phaseFlow");
+      holder.innerHTML = "";
+      phases.forEach(phase => {
+        const div = document.createElement("div");
+        div.className = "phase";
+        div.innerHTML = `<strong>${phase.name}</strong><p>${phase.details}</p><time>${phase.timing}</time>`;
+        holder.appendChild(div);
+      });
+    }
+
+    function renderDeliverables() {
+      const holder = document.getElementById("deliverables");
+      holder.innerHTML = "";
+      deliverableList.forEach(d => {
+        const div = document.createElement("div");
+        div.className = "deliverable";
+        div.innerHTML = `<h3>${d.title}</h3><p>${d.body}</p>`;
+        holder.appendChild(div);
+      });
+    }
+
+    function renderTabs() {
+      const holder = document.getElementById("tabs");
+      holder.innerHTML = "";
+      pillars.forEach(p => {
+        const btn = document.createElement("button");
+        btn.className = `tab ${appState.activePillar === p.id ? "active" : ""}`;
+        btn.textContent = p.name;
+        btn.onclick = () => {
+          appState.activePillar = p.id;
+          renderTabs();
+          renderQuestions();
+          persist();
+        };
+        holder.appendChild(btn);
+      });
+    }
+
+    function renderQuestions() {
+      const p = pillars.find(x => x.id === appState.activePillar);
+      const holder = document.getElementById("questions");
+      holder.innerHTML = "";
+      const intro = document.createElement("div");
+      intro.className = "metric";
+      intro.innerHTML = `<strong>${p.name}</strong><span>${p.short}. Score each query from 0-5 using the maturity scale: 1 Initial, 2 Developing, 3 Defined, 4 Advanced, 5 Leading. Use 0 only when no evidence is available.</span>`;
+      holder.appendChild(intro);
+
+      p.questions.forEach((q, idx) => {
+        const row = document.createElement("div");
+        row.className = "question";
+        row.innerHTML = `
+          <div><p>${idx + 1}. ${q[0]}</p><small>${q[1]}</small></div>
+          <div>
+            <label>Score</label>
+            <select data-score="${idx}">
+              ${[0,1,2,3,4,5].map(v => `<option value="${v}" ${appState.scores[p.id][idx] === v ? "selected" : ""}>${v} - ${scoreLabel(v)}</option>`).join("")}
+            </select>
+          </div>
+          <div>
+            <label>Evidence / notes</label>
+            <textarea data-note="${idx}" placeholder="Interview evidence, document link, gap">${escapeHtml(appState.notes[p.id][idx] || "")}</textarea>
+          </div>
+        `;
+        holder.appendChild(row);
+      });
+
+      holder.querySelectorAll("[data-score]").forEach(sel => {
+        sel.addEventListener("change", event => {
+          appState.scores[p.id][Number(event.target.dataset.score)] = Number(event.target.value);
+          persist();
+          updateScores();
+        });
+      });
+      holder.querySelectorAll("[data-note]").forEach(area => {
+        area.addEventListener("input", event => {
+          appState.notes[p.id][Number(event.target.dataset.note)] = event.target.value;
+          persist();
+        });
+      });
+    }
+
+    function scoreLabel(v) {
+      if (v === 0) return "No evidence";
+      return maturityScale[Math.min(v - 1, 4)].label;
+    }
+
+    function pillarScore(p) {
+      const values = appState.scores[p.id] || [];
+      if (!values.length) return 0;
+      return values.reduce((a, b) => a + Number(b || 0), 0) / values.length;
+    }
+
+    function maturityFor(score) {
+      return maturityScale.find(m => score >= m.min && score <= m.max) || maturityScale[0];
+    }
+
+    function updateScores() {
+      const scores = pillars.map(p => ({ ...p, value: pillarScore(p) }));
+      const totalWeight = scores.reduce((a, p) => a + p.weight, 0);
+      const overall = scores.reduce((a, p) => a + p.value * p.weight, 0) / totalWeight;
+      const maturity = maturityFor(overall);
+      const lowest = scores.slice().sort((a, b) => a.value - b.value)[0];
+      const deg = Math.round((overall / 5) * 360);
+
+      document.getElementById("overallScore").textContent = overall.toFixed(1);
+      document.getElementById("overallPercent").textContent = `${Math.round(overall / 5 * 100)}%`;
+      document.getElementById("maturityLevel").textContent = maturity.label;
+      document.getElementById("lowestPillar").textContent = lowest.name;
+      document.getElementById("nextPhase").textContent = recommendedPhase(overall);
+      document.getElementById("scoreRing").style.background = `conic-gradient(${maturity.color} ${deg}deg, #dce6ea ${deg}deg)`;
+
+      renderPillars(scores);
+      renderRoadmap(scores, overall);
+    }
+
+    function recommendedPhase(score) {
+      if (score < 2.5) return "Phase 2";
+      if (score < 3.4) return "Phase 3";
+      if (score < 4.1) return "Phase 4";
+      return "Phase 5";
+    }
+
+    function renderPillars(scores) {
+      const holder = document.getElementById("pillarGrid");
+      holder.innerHTML = "";
+      scores.forEach(p => {
+        const maturity = maturityFor(p.value);
+        const div = document.createElement("div");
+        div.className = "pillar-card";
+        div.innerHTML = `
+          <div>
+            <h3>${p.name}</h3>
+            <small>${p.short}</small>
+          </div>
+          <div class="score">${p.value.toFixed(1)} <span style="font-size:13px;color:var(--muted)">/ 5</span></div>
+          <div class="heat"><div style="width:${p.value / 5 * 100}%;background:${maturity.color}"></div></div>
+          <div><strong>${maturity.label}</strong><br><small>${maturity.meaning}</small></div>
+          <div class="tag-row">${p.refs.map(r => `<span class="tag">${r}</span>`).join("")}</div>
+        `;
+        holder.appendChild(div);
+      });
+    }
+
+    function renderRoadmap(scores, overall) {
+      const ordered = scores.slice().sort((a, b) => a.value - b.value);
+      const rows = [
+        ["Executive action", `Fund ${recommendedPhase(overall)} and close the biggest readiness gaps before scaling agents.`],
+        ["Immediate focus", `${ordered[0].name} and ${ordered[1].name}`],
+        ["Pilot gate", overall >= 3 ? "Ready to shortlist pilots with risk guardrails." : "Run targeted remediation sprint before production pilot."],
+        ["Scale gate", overall >= 4 ? "Scale candidate; formalize AI COE and managed operations." : "Do not scale until platform, controls, and adoption metrics are stable."]
+      ];
+      document.getElementById("roadmapTable").innerHTML = rows.map(r => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join("");
+    }
+
+    function addUseCase() {
+      const name = document.getElementById("useCaseName").value.trim();
+      const impact = clamp(Number(document.getElementById("useCaseImpact").value), 1, 5);
+      const effort = clamp(Number(document.getElementById("useCaseEffort").value), 1, 5);
+      if (!name) return;
+      appState.useCases.push({ name, impact, effort });
+      document.getElementById("useCaseName").value = "";
+      persist();
+      renderUseCases();
+    }
+
+    function renderUseCases() {
+      const holder = document.getElementById("useCaseTable");
+      const sorted = appState.useCases
+        .map((u, idx) => ({ ...u, idx, priority: Number(u.impact) * (6 - Number(u.effort)) }))
+        .sort((a, b) => b.priority - a.priority);
+      holder.innerHTML = sorted.map(u => `
+        <tr>
+          <td>${escapeHtml(u.name)}</td>
+          <td>${u.impact}</td>
+          <td>${u.effort}</td>
+          <td><span class="priority">${priorityLabel(u.priority)}</span></td>
+          <td><button class="ghost" onclick="removeUseCase(${u.idx})">Remove</button></td>
+        </tr>
+      `).join("");
+    }
+
+    function priorityLabel(score) {
+      if (score >= 18) return "Pilot now";
+      if (score >= 12) return "Roadmap";
+      return "Defer";
+    }
+
+    function removeUseCase(idx) {
+      appState.useCases.splice(idx, 1);
+      persist();
+      renderUseCases();
+    }
+
+    function downloadJson() {
+      saveMeta();
+      download(`AIMM-scorecard-${safeName(appState.clientName || "client")}.json`, JSON.stringify(appState, null, 2), "application/json");
+    }
+
+    function importJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          Object.assign(appState, data);
+          persist();
+          location.reload();
+        } catch (_) {
+          alert("Import failed. Choose a valid AIMM scorecard JSON file.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function downloadReport() {
+      saveMeta();
+      const scores = pillars.map(p => ({ ...p, value: pillarScore(p) }));
+      const overall = scores.reduce((a, p) => a + p.value * p.weight, 0) / scores.reduce((a, p) => a + p.weight, 0);
+      const body = `
+<!doctype html><html><head><meta charset="utf-8"><title>AIMM Report</title>
+<style>body{font-family:Segoe UI,Arial,sans-serif;color:#172026;margin:28px;line-height:1.45}h1{font-size:24px}table{border-collapse:collapse;width:100%;margin:14px 0}td,th{border:1px solid #d8e0e5;padding:8px;text-align:left;vertical-align:top}.bad{background:#fde8e8}.mid{background:#fff6db}.good{background:#def7ec}</style></head><body>
+<h1>AIMM AI Readiness & Agentic AI Adoption Report</h1>
+<p><strong>Client:</strong> ${escapeHtml(appState.clientName || "")} &nbsp; <strong>Sector:</strong> ${escapeHtml(appState.sector || "")} &nbsp; <strong>Date:</strong> ${escapeHtml(appState.date || "")}</p>
+<p><strong>Overall score:</strong> ${overall.toFixed(1)} / 5 (${maturityFor(overall).label})</p>
+<p>${escapeHtml(appState.context || "")}</p>
+<h2>5-Pillar Scorecard</h2>
+<table><tr><th>Pillar</th><th>Score</th><th>Maturity</th><th>Focus</th></tr>${scores.map(p => `<tr class="${p.value < 2.5 ? "bad" : p.value < 3.5 ? "mid" : "good"}"><td>${p.name}</td><td>${p.value.toFixed(1)}</td><td>${maturityFor(p.value).label}</td><td>${p.short}</td></tr>`).join("")}</table>
+<h2>Recommended Roadmap</h2>
+<ol>${phases.map(p => `<li><strong>${p.name}</strong> (${p.timing}): ${p.details}</li>`).join("")}</ol>
+<h2>Priority Use Cases</h2>
+<table><tr><th>Use case</th><th>Impact</th><th>Effort</th><th>Priority</th></tr>${appState.useCases.map(u => `<tr><td>${escapeHtml(u.name)}</td><td>${u.impact}</td><td>${u.effort}</td><td>${priorityLabel(u.impact * (6 - u.effort))}</td></tr>`).join("")}</table>
+<h2>Question-Level Evidence</h2>
+${pillars.map(p => `<h3>${p.name}</h3><table><tr><th>Question</th><th>Score</th><th>Evidence / notes</th></tr>${p.questions.map((q, i) => `<tr><td>${q[0]}</td><td>${appState.scores[p.id][i]}</td><td>${escapeHtml(appState.notes[p.id][i] || "")}</td></tr>`).join("")}</table>`).join("")}
+</body></html>`;
+      download(`AIMM-report-${safeName(appState.clientName || "client")}.html`, body, "text/html");
+    }
+
+    function resetAssessment() {
+      if (!confirm("Reset this local AIMM assessment?")) return;
+      localStorage.removeItem("aimm-scorecard-v1");
+      location.reload();
+    }
+
+    function download(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function clamp(n, min, max) {
+      return Math.max(min, Math.min(max, Number.isFinite(n) ? n : min));
+    }
+
+    function safeName(value) {
+      return String(value).trim().replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() || "client";
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    init();
+  </script>
+</body>
+</html>
