@@ -6,15 +6,15 @@ Enterprise AI Readiness Framework is a practical portfolio accelerator for evalu
 
 The repository includes a Windows-friendly AIMM assessment app and supporting framework material for enterprise advisory conversations.
 
-## Business Problem
+## Business Value
 
-Many organizations want to adopt GenAI but lack a structured view of whether their data, infrastructure, controls, processes, and people are ready. This framework helps translate AI ambition into a practical readiness discussion that can be reviewed by technology, security, data, and executive stakeholders.
+Many organizations want to adopt GenAI but lack a structured view of whether their data, infrastructure, controls, processes, and people are ready. This framework translates AI ambition into a practical readiness discussion that can be reviewed by technology, security, data, and executive stakeholders.
 
 ## Key Features
 
 - Five-pillar maturity assessment covering data, AI infrastructure, cyber posture, process/BizOps, and talent/culture
 - 0-5 scoring model for readiness discussion
-- Evidence notes by pillar
+- Evidence notes by assessment pillar
 - Overall readiness score and maturity level
 - GenAI and agentic AI use-case prioritization
 - Local browser storage for draft assessments
@@ -42,7 +42,7 @@ Maturity Scoring + Use Case Prioritization
 |
 Local Browser Storage
 |
-Board-ready Export / Recommendations
+Board-Ready Export / Recommendations
 ```
 
 ## Technology Stack
@@ -51,6 +51,7 @@ Board-ready Export / Recommendations
 - Windows batch launcher
 - Browser local storage
 - Source framework materials in PDF/PPTX form
+- Local-first assessment workflow
 
 ## Installation
 
@@ -89,11 +90,11 @@ MVP / useful portfolio tool.
 ## Roadmap
 
 - Add screenshots of the assessment workflow
-- Add a sample sanitized readiness report
+- Add a sanitized sample readiness report
 - Add a one-page consulting playbook
 - Add mapping to NIST AI RMF, ISO/IEC 42001, OWASP LLM risks, and cloud landing-zone controls
 - Add versioned releases for the Windows app package
 
 ## Disclaimer
 
-This is a personal portfolio and experimental project unless otherwise stated. It is not legal, compliance, cybersecurity, or procurement advice. Validate all controls and recommendations against organizational policy and current regulatory requirements.
+This is personal portfolio and experimental project work unless otherwise stated. It is not legal, compliance, cybersecurity, or procurement advice. Validate all controls and recommendations against organizational policy and current regulatory requirements.
